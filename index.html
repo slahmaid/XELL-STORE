@@ -64,6 +64,27 @@
       object-fit: cover;
     }
 
+    .gallery-section {
+      padding: 24px 16px 8px;
+      background-color: #f9fafb;
+    }
+
+    .gallery-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .gallery-image {
+      width: 100%;
+      border-radius: 12px;
+      display: block;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+      object-fit: cover;
+    }
+
     .section {
       padding: 0;
     }
@@ -359,6 +380,15 @@
     <!-- 3.jpg -->
     <section class="section">
       <img src="img/3.jpg" alt="صورة المنتج 3" class="hero-image">
+    </section>
+
+    <!-- معرض 7 - 8 - 9 -->
+    <section class="gallery-section">
+      <div class="gallery-grid">
+        <img src="img/7.png" alt="صورة المنتج 7" class="gallery-image">
+        <img src="img/8.png" alt="صورة المنتج 8" class="gallery-image">
+        <img src="img/9.png" alt="صورة المنتج 9" class="gallery-image">
+      </div>
     </section>
 
     <!-- 5.jpg -->
