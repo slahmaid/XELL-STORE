@@ -491,10 +491,15 @@
           bodyParams.append(key, value);
         }
 
+        // Pass order date to the thank-you page.
+        // Using local date (YYYY-MM-DD) for a nicer user display.
+        const d = new Date();
+        const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
         const query = new URLSearchParams({
           name: formData.get("name") || "",
           phone: formData.get("phone") || "",
-          source: formData.get("source") || ""
+          date: localDate
         }).toString();
 
         try {
