@@ -354,7 +354,7 @@
         </div>
         <div class="price-note">خصم رمضان - السعر النهائي 799 درهم بدلاً من 899 درهم.</div>
         <div class="shipping-note">التوصيل مجاني إلى جميع المدن.</div>
-        <form action="https://script.google.com/macros/s/AKfycbyxd2_4cHt03qd2_QKpvVk1SgZtocNA4lyGrHqbZ9w-a6qWs7vJgizSmCfvrHqGIp-M/exec" method="POST">
+        <form action="https://script.google.com/macros/s/AKfycbyxd2_4cHt03qd2_QKpvVk1SgZtocNA4lyGrHqbZ9w-a6qWs7vJgizSmCfvrHqGIp-M/exec" method="POST" class="order-form">
           <input type="hidden" name="source" value="order-1">
           <input type="hidden" name="token" value="XELL03..$">
           <div class="form-group">
@@ -418,7 +418,7 @@
         </div>
         <div class="price-note">خصم رمضان - السعر النهائي 799 درهم بدلاً من 899 درهم.</div>
         <div class="shipping-note">التوصيل مجاني إلى جميع المدن.</div>
-        <form action="https://script.google.com/macros/s/AKfycbyxd2_4cHt03qd2_QKpvVk1SgZtocNA4lyGrHqbZ9w-a6qWs7vJgizSmCfvrHqGIp-M/exec" method="POST">
+        <form action="https://script.google.com/macros/s/AKfycbyxd2_4cHt03qd2_QKpvVk1SgZtocNA4lyGrHqbZ9w-a6qWs7vJgizSmCfvrHqGIp-M/exec" method="POST" class="order-form">
           <input type="hidden" name="source" value="order-2">
           <input type="hidden" name="token" value="XELL03..$">
           <div class="form-group">
@@ -462,6 +462,59 @@
     <span>|</span>
     <span style="direction:ltr; unicode-bidi:bidi-override;">07 23 49 68 54</span>
   </footer>
+
+  <script>
+    // Redirect to thank-you.html after the order is submitted.
+    // We send the POST request via fetch (cross-origin), then navigate to the thank-you page.
+    (function () {
+      const forms = document.querySelectorAll("form.order-form");
+
+      async function handleOrderSubmit(e) {
+        e.preventDefault();
+
+        const form = e.currentTarget;
+        if (form.dataset.submitting === "1") return;
+        form.dataset.submitting = "1";
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "جاري الإرسال...";
+        }
+
+        const formData = new FormData(form);
+        const url = form.action;
+
+        // Convert to x-www-form-urlencoded for better compatibility with Apps Script.
+        const bodyParams = new URLSearchParams();
+        for (const [key, value] of formData.entries()) {
+          bodyParams.append(key, value);
+        }
+
+        const query = new URLSearchParams({
+          name: formData.get("name") || "",
+          phone: formData.get("phone") || "",
+          source: formData.get("source") || ""
+        }).toString();
+
+        try {
+          await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+            body: bodyParams.toString(),
+            // Apps Script is usually cross-origin; "no-cors" avoids CORS errors.
+            mode: "no-cors"
+          });
+        } finally {
+          window.location.href = "thank-you.html" + (query ? ("?" + query) : "");
+        }
+      }
+
+      forms.forEach((form) => {
+        form.addEventListener("submit", handleOrderSubmit);
+      });
+    })();
+  </script>
 </body>
 </html>
 
